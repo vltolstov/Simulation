@@ -1,8 +1,17 @@
+import java.awt.*;
+
 public class Simulation {
 
     public static void main(String[] args) {
 
+        //меню сообщает: запуск игры - Enter, стоп или пауза игры - Esc, следующий ход - стрелка вправо.
+        //после Enter инициализация игры и ввести размер мира в формате "1 1";
+
+//        Menu menu = new Menu();
+//        menu.show();
+
         //создание мира
+        //Map world = new Map();
 
         //создание игры с миром
         //запуск игры
