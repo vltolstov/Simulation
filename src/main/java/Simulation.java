@@ -1,24 +1,22 @@
+
 public class Simulation {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
-        //меню сообщает: запуск игры - Enter, стоп или пауза игры - Esc, следующий ход - стрелка вправо.
-        //после Enter инициализация игры и ввести размер мира в формате "1 1";
+        GameState state = GameState.ONGOING;
 
-        Menu menu = new Menu();
-        menu.setGameState();
+        while (state != GameState.STOP) {
 
-        System.out.println("Press Enter to continue...");
+            //ввести размер мира в формате "1 1";
+            //создание мира
+            //Map world = new Map();
+            //создание игры с миром
+            //запуск игры
 
-        // после меню проверяется состояние игры, которое установило меню.
-        // и либо запускает цикл, либо выходит из игры
+            Menu menu = new Menu();
+            state = menu.selectGameState(state);
 
-        //создание мира
-        //Map world = new Map();
-
-        //создание игры с миром
-        //запуск игры
-
+        }
     }
 
     //Главный класс приложения, включает в себя:
