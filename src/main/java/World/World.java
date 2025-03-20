@@ -3,26 +3,34 @@ package World;
 import Entities.Entity;
 import Entities.StaticEntities.Grass;
 import Utils.InputReader;
-import Utils.Notifier;
+import Utils.ConsoleRenderer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class World {
 
-    private final int worldWidth;
-    private final int worldHeight;
+    private int width;
+    private int height;
     private final static String SETTINGS_WORLD_WIDTH_MESSAGE = "Введите ширину мира:";
     private final static String SETTINGS_WORLD_HEIGHT_MESSAGE = "Введите высоту мира:";
 
     private Map<Coordinates, Entity> world = new HashMap<Coordinates, Entity>();
 
     public World () {
-        Notifier.showMessage(SETTINGS_WORLD_WIDTH_MESSAGE);
-        worldWidth = InputReader.getUserDigits();
+        ConsoleRenderer.renderMessage(SETTINGS_WORLD_WIDTH_MESSAGE);
+        width = InputReader.getUserDigits();
 
-        Notifier.showMessage(SETTINGS_WORLD_HEIGHT_MESSAGE);
-        worldHeight = InputReader.getUserDigits();
+        ConsoleRenderer.renderMessage(SETTINGS_WORLD_HEIGHT_MESSAGE);
+        height = InputReader.getUserDigits();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void setEntities(Coordinates coordinates, Entity entity) {
@@ -32,8 +40,8 @@ public class World {
 
     public void setupDefault() {
 
-        for(int x = 0; x < worldWidth; x++) {
-            for(int y = 0; y < worldHeight; y++) {
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
                 setEntities(new Coordinates(x, y), new Grass(new Coordinates(x, y)));
             }
         }
