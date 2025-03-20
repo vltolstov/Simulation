@@ -1,5 +1,5 @@
 import Utils.InputReader;
-import Utils.Notifier;
+import Utils.ConsoleRenderer;
 
 public class Menu {
 
@@ -13,8 +13,8 @@ public class Menu {
     }
 
     private void showMenuMessages() {
-        Notifier.showMessage(STOP_MESSAGE);
-        Notifier.showMessage(PAUSE_MESSAGE);
+        ConsoleRenderer.renderMessage(STOP_MESSAGE);
+        ConsoleRenderer.renderMessage(PAUSE_MESSAGE);
     }
 
     public GameState selectGameState(GameState state) {
@@ -26,7 +26,7 @@ public class Menu {
         } else if (command.equals(CMD_PAUSE)) {
             return state = GameState.PAUSE;
         } else {
-            Notifier.showErrorMessage();
+            ConsoleRenderer.renderErrorMessage();
         }
 
         return state;

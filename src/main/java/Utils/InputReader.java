@@ -13,7 +13,7 @@ public class InputReader {
     public static int getUserDigits() {
 
         while(!scanner.hasNextInt()) {
-            Notifier.showErrorMessage();
+            ConsoleRenderer.renderErrorMessage();
             scanner.next();
         }
 
