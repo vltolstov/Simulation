@@ -26,7 +26,6 @@ public class WorldFactory {
             Entity entity = (new EntityFactory()).createRandomEntity(coordinates);
 
             world.setEntity(coordinates, entity);
-            //world.setEntity(coordinates, new Grass(coordinates));
 
         }
 
