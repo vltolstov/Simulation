@@ -1,6 +1,10 @@
 package Utils;
 
+import Entities.Entity;
+import Entities.StaticEntities.Grass;
+import Sprites.Sprite;
 import World.World;
+import World.Coordinates;
 
 public class ConsoleRenderer {
 
@@ -21,11 +25,19 @@ public class ConsoleRenderer {
             String line = "";
 
             for(int consoleCol = 0; consoleCol < world.getWidth(); consoleCol++) {
-                line += "+";
+
+                Coordinates coordinates = new Coordinates(consoleCol, consoleRow);
+
+                if(world.isWorldCellEmpty(coordinates)){
+                    line += Sprite.getEmptySprite();
+                } else {
+                    Entity entity = world.getEntity(coordinates);
+                    line += entity.getSprite();
+                }
+
             }
 
             System.out.println(line);
         }
-        
     }
 }
