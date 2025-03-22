@@ -1,9 +1,8 @@
 package World;
 
 import Entities.Entity;
-import Entities.StaticEntities.Grass;
-import Utils.InputReader;
 import Utils.ConsoleRenderer;
+import Utils.InputReader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +16,7 @@ public class World {
 
     private Map<Coordinates, Entity> world = new HashMap<Coordinates, Entity>();
 
-    public World () {
+    public World() {
         ConsoleRenderer.renderMessage(SETTINGS_WORLD_WIDTH_MESSAGE);
         width = InputReader.getUserDigits();
 
@@ -33,21 +32,16 @@ public class World {
         return height;
     }
 
-    public void setEntities(Coordinates coordinates, Entity entity) {
+    public void setEntity(Coordinates coordinates, Entity entity) {
         entity.coordinates = coordinates;
         world.put(coordinates, entity);
     }
 
-    public void setupDefault() {
-
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
-                setEntities(new Coordinates(x, y), new Grass(new Coordinates(x, y)));
-            }
-        }
-
+    public Entity getEntity(Coordinates coordinates) {
+        return world.get(coordinates);
     }
-    //Карта, содержит в себе коллекцию для хранения существ и их расположения.
-    //Советую не спешить использовать двумерный массив или список списков, а подумать какие ещё коллекции могут подойти.
 
+    public boolean isWorldCellEmpty(Coordinates coordinates) {
+        return !world.containsKey(coordinates);
+    }
 }
