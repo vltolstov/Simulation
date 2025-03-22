@@ -1,16 +1,18 @@
+import Utils.ConsoleRenderer;
+import World.World;
+import World.WorldFactory;
 
 public class Simulation {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         GameState state = GameState.ONGOING;
+        World world = (new WorldFactory()).createWorld();
 
         while (state != GameState.STOP) {
 
-            //ввести размер мира в формате "1 1";
-            //создание мира
-            //Map world = new Map();
-            //создание игры с миром
+            ConsoleRenderer.renderWorld(world);
+
             //запуск игры
 
             Menu menu = new Menu();
@@ -18,6 +20,7 @@ public class Simulation {
 
         }
     }
+
 
     //Главный класс приложения, включает в себя:
     //
