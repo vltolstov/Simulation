@@ -32,6 +32,16 @@ public class World {
         return height;
     }
 
+    public void removeEntity(Coordinates coordinates) {
+        world.remove(coordinates);
+    }
+
+    public void moveEntity(Coordinates from, Coordinates to) {
+        Entity entity = world.get(from);
+        removeEntity(from);
+        setEntity(to, entity);
+    }
+
     public void setEntity(Coordinates coordinates, Entity entity) {
         entity.coordinates = coordinates;
         world.put(coordinates, entity);
