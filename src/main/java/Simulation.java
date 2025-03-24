@@ -1,3 +1,4 @@
+import Entities.Creatures.Creature;
 import Entities.Creatures.Herbivore;
 import Entities.Creatures.Predator;
 import Entities.Entity;
@@ -7,8 +8,6 @@ import World.Coordinates;
 import World.World;
 import World.WorldFactory;
 
-import java.util.Set;
-
 public class Simulation {
 
     public static void main(String[] args) {
@@ -16,36 +15,35 @@ public class Simulation {
         GameState state = GameState.ONGOING;
         World world = (new WorldFactory()).createWorld();
 
+
+        //создаем корову
+        Coordinates herbiCoordinates = new Coordinates(1, 1);
+        Creature herbivore = new Herbivore(herbiCoordinates);
+        world.setEntity(herbiCoordinates, herbivore);
+
+        //создаем камень
+        Coordinates rockCoordinates = new Coordinates(0, 0);
+        Entity entityRock = new Rock(rockCoordinates);
+        world.setEntity(rockCoordinates, entityRock);
+
+        //создаем хищника
+        Coordinates predatorCoordinates = new Coordinates(2, 1);
+        Entity entityPredator = new Predator(predatorCoordinates);
+        world.setEntity(predatorCoordinates, entityPredator);
+
+
         while (state != GameState.STOP) {
 
-            //создаем корову
-            Coordinates coordinates = new Coordinates(1, 1);
-            Entity entity = new Herbivore(coordinates);
-            world.setEntity(coordinates, entity);
-
-            //создаем камень
-            Coordinates rockCoordinates = new Coordinates(0, 0);
-            Entity entityRock = new Rock(rockCoordinates);
-            world.setEntity(rockCoordinates, entityRock);
-
-            //создаем хищника
-            Coordinates predatorCoordinates = new Coordinates(2, 1);
-            Entity entityPredator = new Predator(predatorCoordinates);
-            world.setEntity(predatorCoordinates, entityPredator);
-
-            Herbivore test = (Herbivore) world.getEntity(coordinates);
-            Set<Coordinates> testh = test.getAvailableCoordinateForMove(world);
+//            Herbivore test = (Herbivore) world.getEntity(coordinates);
+//            Set<Coordinates> testh = test.getAvailableCoordinateForMove(world);
 
             ConsoleRenderer.renderWorld(world);
-
-            int a = 123;
-
+            world.moveEntity(herbivore.coordinates, herbivore.makeMove(world));
+            ConsoleRenderer.renderWorld(world);
 
             //запуск игры
-
             Menu menu = new Menu();
             state = menu.selectGameState(state);
-
         }
     }
 
