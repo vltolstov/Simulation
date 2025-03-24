@@ -37,8 +37,8 @@ public class Coordinates {
         int newCoordinateX = x + shift.xShift;
         int newCoordinateY = y + shift.yShift;
 
-        if(newCoordinateX < 0 || newCoordinateX > world.getWidth()) return false;
-        if(newCoordinateY < 0 || newCoordinateY > world.getHeight()) return false;
+        if (newCoordinateX < 0 || newCoordinateX >= world.getWidth()) return false;
+        if (newCoordinateY < 0 || newCoordinateY >= world.getHeight()) return false;
 
         return true;
     }
