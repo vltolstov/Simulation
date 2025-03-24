@@ -29,10 +29,17 @@ public class Coordinates {
     }
 
     public Coordinates shift(CoordinatesShift shift) {
-        return new Coordinates(x, y); //тут из шифта подтянуть смещение для x и y
+        return new Coordinates(x + shift.xShift, y + shift.yShift);
     }
 
     public boolean canShift(CoordinatesShift shift, World world) {
+
+        int newCoordinateX = x + shift.xShift;
+        int newCoordinateY = y + shift.yShift;
+
+        if(newCoordinateX < 0 || newCoordinateX > world.getWidth()) return false;
+        if(newCoordinateY < 0 || newCoordinateY > world.getHeight()) return false;
+
         return true;
     }
 
