@@ -1,9 +1,13 @@
 import Entities.Creatures.Herbivore;
+import Entities.Creatures.Predator;
 import Entities.Entity;
+import Entities.StaticEntities.Rock;
 import Utils.ConsoleRenderer;
 import World.Coordinates;
 import World.World;
 import World.WorldFactory;
+
+import java.util.Set;
 
 public class Simulation {
 
@@ -14,13 +18,25 @@ public class Simulation {
 
         while (state != GameState.STOP) {
 
-            ConsoleRenderer.renderWorld(world);
+            //создаем корову
             Coordinates coordinates = new Coordinates(1, 1);
             Entity entity = new Herbivore(coordinates);
             world.setEntity(coordinates, entity);
 
-            Entity test = world.getEntity(coordinates);
-            test.getAvailableCoordinateForMove();
+            //создаем камень
+            Coordinates rockCoordinates = new Coordinates(0, 0);
+            Entity entityRock = new Rock(rockCoordinates);
+            world.setEntity(rockCoordinates, entityRock);
+
+            //создаем хищника
+            Coordinates predatorCoordinates = new Coordinates(2, 1);
+            Entity entityPredator = new Predator(predatorCoordinates);
+            world.setEntity(predatorCoordinates, entityPredator);
+
+            Herbivore test = (Herbivore) world.getEntity(coordinates);
+            Set<Coordinates> testh = test.getAvailableCoordinateForMove(world);
+
+            ConsoleRenderer.renderWorld(world);
 
             int a = 123;
 
