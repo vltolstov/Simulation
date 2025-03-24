@@ -8,10 +8,8 @@ import World.World;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Creature extends Entity implements moveable {
+public abstract class Creature extends Entity implements ICreature {
 
-    //Абстрактный класс, наследуется от Entities.Entity.
-    //Существо, имеет скорость (сколько клеток может пройти за 1 ход), количество HP.
     protected int speed;
     protected int health;
 
@@ -19,8 +17,12 @@ public abstract class Creature extends Entity implements moveable {
         super(coordinates);
     }
 
-    public void makeMove() {
-        //Имеет метод makeMove() - сделать ход.
+    public Coordinates makeMove(World world) {
+
+        Set<Coordinates> availableCoordinates = getAvailableCoordinateForMove(world);
+        coordinates = selectMoveCoordinate(availableCoordinates);
+
+        return selectMoveCoordinate(availableCoordinates);
     }
 
     public Set<Coordinates> getAvailableCoordinateForMove(World world) {
@@ -28,6 +30,7 @@ public abstract class Creature extends Entity implements moveable {
         Set<Coordinates> availableCoordinates = new HashSet<Coordinates>();
 
         for (CoordinatesShift shift : getMoveCoordinates()) {
+
             if (coordinates.canShift(shift, world)) {
                 Coordinates newCoordinates = coordinates.shift(shift);
 
@@ -45,5 +48,4 @@ public abstract class Creature extends Entity implements moveable {
     }
 
     protected abstract Set<CoordinatesShift> getMoveCoordinates();
-
 }
