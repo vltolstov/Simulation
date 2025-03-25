@@ -20,16 +20,20 @@ public abstract class Creature extends Entity implements ICreature {
     public Coordinates makeMove(World world) {
 
         Set<Coordinates> availableCoordinates = getAvailableCoordinateForMove(world);
-        coordinates = selectMoveCoordinate(availableCoordinates);
 
-        return selectMoveCoordinate(availableCoordinates);
+        if (!availableCoordinates.isEmpty()) {
+            coordinates = selectMoveCoordinate(availableCoordinates);
+            return selectMoveCoordinate(availableCoordinates);
+        }
+
+        return coordinates;
     }
 
     public Set<Coordinates> getAvailableCoordinateForMove(World world) {
 
         Set<Coordinates> availableCoordinates = new HashSet<Coordinates>();
 
-        for (CoordinatesShift shift : getMoveCoordinates()) {
+        for (CoordinatesShift shift : getMoveCoordinates(speed)) {
 
             if (coordinates.canShift(shift, world)) {
                 Coordinates newCoordinates = coordinates.shift(shift);
@@ -43,9 +47,7 @@ public abstract class Creature extends Entity implements ICreature {
         return availableCoordinates;
     }
 
-    private boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
-        return world.isWorldCellEmpty(coordinates);
-    }
+    protected abstract boolean isAvailableCoordinateForMove(Coordinates coordinates, World world);
 
-    protected abstract Set<CoordinatesShift> getMoveCoordinates();
+    protected abstract Set<CoordinatesShift> getMoveCoordinates(int speed);
 }

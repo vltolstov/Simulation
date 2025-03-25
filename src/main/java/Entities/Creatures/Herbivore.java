@@ -2,6 +2,7 @@ package Entities.Creatures;
 
 import World.Coordinates;
 import World.CoordinatesShift;
+import World.World;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,10 +19,10 @@ public class Herbivore extends Creature {
     }
 
     @Override
-    protected Set<CoordinatesShift> getMoveCoordinates() {
+    protected Set<CoordinatesShift> getMoveCoordinates(int speed) {
 
         //здесь логика хода травоядного
-        //...
+        //... учитывая скорость
 
         //по-умолчанию во все стороны
         return new HashSet<>(Arrays.asList(
@@ -37,11 +38,17 @@ public class Herbivore extends Creature {
     }
 
     @Override
+    protected boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
+        // если пусто то можем идти
+        // если не пусто то вернуть тип
+        return world.isWorldCellEmpty(coordinates);
+    }
+
+    @Override
     public String getSprite() {
         return SPRITE;
     }
 
-    //Травоядное, наследуется от Entities.Creatures.Creature. 🐮
     //Стремятся найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение.
 
 }

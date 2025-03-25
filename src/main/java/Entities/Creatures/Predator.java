@@ -2,6 +2,7 @@ package Entities.Creatures;
 
 import World.Coordinates;
 import World.CoordinatesShift;
+import World.World;
 
 import java.util.Set;
 
@@ -18,8 +19,13 @@ public class Predator extends Creature {
     }
 
     @Override
-    protected Set<CoordinatesShift> getMoveCoordinates() {
+    protected Set<CoordinatesShift> getMoveCoordinates(int speed) {
         return Set.of();
+    }
+
+    @Override
+    protected boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
+        return world.isWorldCellEmpty(coordinates); //для хищников - идти туда где пусто, идти на траву
     }
 
     @Override
