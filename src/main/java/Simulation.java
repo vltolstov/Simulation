@@ -2,6 +2,7 @@ import Entities.Creatures.Creature;
 import Entities.Creatures.Herbivore;
 import Entities.Creatures.Predator;
 import Entities.Entity;
+import Entities.StaticEntities.Grass;
 import Entities.StaticEntities.Rock;
 import Utils.ConsoleRenderer;
 import World.Coordinates;
@@ -23,20 +24,30 @@ public class Simulation {
 
         //создаем камень
         Coordinates rockCoordinates = new Coordinates(0, 0);
-        Entity entityRock = new Rock(rockCoordinates);
-        world.setEntity(rockCoordinates, entityRock);
+        Entity rock = new Rock(rockCoordinates);
+        world.setEntity(rockCoordinates, rock);
+
+        //создаем траву
+        Coordinates grassCoordinates = new Coordinates(0, 2);
+        Entity grass = new Grass(grassCoordinates);
+        world.setEntity(grassCoordinates, grass);
 
         //создаем хищника
         Coordinates predatorCoordinates = new Coordinates(2, 1);
-        Entity entityPredator = new Predator(predatorCoordinates);
-        world.setEntity(predatorCoordinates, entityPredator);
+        Creature predator = new Predator(predatorCoordinates);
+        world.setEntity(predatorCoordinates, predator);
 
 
         while (state != GameState.STOP) {
 
             ConsoleRenderer.renderWorld(world);
+            ConsoleRenderer.renderMessage(herbivore.coordinates.toString());
+            ConsoleRenderer.renderMessage(predator.coordinates.toString());
             world.moveEntity(herbivore.coordinates, herbivore.makeMove(world));
+            world.moveEntity(predator.coordinates, predator.makeMove(world));
             ConsoleRenderer.renderWorld(world);
+            ConsoleRenderer.renderMessage(herbivore.coordinates.toString());
+            ConsoleRenderer.renderMessage(predator.coordinates.toString());
 
             //запуск игры
             Menu menu = new Menu();
