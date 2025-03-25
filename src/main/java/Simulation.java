@@ -34,9 +34,6 @@ public class Simulation {
 
         while (state != GameState.STOP) {
 
-//            Herbivore test = (Herbivore) world.getEntity(coordinates);
-//            Set<Coordinates> testh = test.getAvailableCoordinateForMove(world);
-
             ConsoleRenderer.renderWorld(world);
             world.moveEntity(herbivore.coordinates, herbivore.makeMove(world));
             ConsoleRenderer.renderWorld(world);
