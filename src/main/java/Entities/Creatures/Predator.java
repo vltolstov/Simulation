@@ -1,10 +1,8 @@
 package Entities.Creatures;
 
+import Entities.StaticEntities.Grass;
 import World.Coordinates;
-import World.CoordinatesShift;
 import World.World;
-
-import java.util.Set;
 
 public class Predator extends Creature {
 
@@ -13,19 +11,15 @@ public class Predator extends Creature {
 
     public Predator(Coordinates coordinates) {
         super(coordinates);
-        speed = 1;
+        speed = 2;
         health = 100;
         atacksPower = 20;
     }
 
     @Override
-    protected Set<CoordinatesShift> getMoveCoordinates(int speed) {
-        return Set.of();
-    }
-
-    @Override
     protected boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
-        return world.isWorldCellEmpty(coordinates); //для хищников - идти туда где пусто, идти на траву
+        //для хищников - идти туда где пусто, идти на траву
+        return world.isWorldCellEmpty(coordinates) || world.getEntity(coordinates) instanceof Grass;
     }
 
     @Override
