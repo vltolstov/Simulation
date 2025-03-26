@@ -8,18 +8,32 @@ public class Predator extends Creature {
 
     private static final String SPRITE = " \uD83D\uDC2F ";
     private int atacksPower;
+    private boolean onGrass;
 
     public Predator(Coordinates coordinates) {
         super(coordinates);
         speed = 2;
         health = 100;
         atacksPower = 20;
+        onGrass = false;
     }
 
     @Override
     protected boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
-        //для хищников - идти туда где пусто, идти на траву
         return world.isWorldCellEmpty(coordinates) || world.getEntity(coordinates) instanceof Grass;
+    }
+
+    public boolean getOnGrassState() {
+        return onGrass;
+    }
+
+    public void moveToGrass() {
+        onGrass = true;
+    }
+
+    public void moveFromGrass(Coordinates grassCoordinates, World world) {
+        onGrass = false;
+        world.setEntity(grassCoordinates, new Grass(grassCoordinates));
     }
 
     @Override
