@@ -53,20 +53,18 @@ public abstract class Creature extends Entity implements ICreature {
 
     protected Set<CoordinatesShift> getMoveCoordinates(int speed) {
 
-        int distance = 1 * speed;
-
         Set<CoordinatesShift> moveCoordinates = new HashSet<>();
 
-        for (int i = 1; i <= distance; i++) {
+        for (int shift = 1; shift <= speed; shift++) {
             List<CoordinatesShift> coordinates = Arrays.asList(
-                    new CoordinatesShift(distance, 0),
-                    new CoordinatesShift(distance, distance),
-                    new CoordinatesShift(0, distance),
-                    new CoordinatesShift(-distance, distance),
-                    new CoordinatesShift(-distance, 0),
-                    new CoordinatesShift(-distance, -distance),
-                    new CoordinatesShift(0, -distance),
-                    new CoordinatesShift(distance, -distance)
+                    new CoordinatesShift(shift, 0),
+                    new CoordinatesShift(shift, shift),
+                    new CoordinatesShift(0, shift),
+                    new CoordinatesShift(-shift, shift),
+                    new CoordinatesShift(-shift, 0),
+                    new CoordinatesShift(-shift, -shift),
+                    new CoordinatesShift(0, -shift),
+                    new CoordinatesShift(shift, -shift)
             );
 
             moveCoordinates.addAll(coordinates);
