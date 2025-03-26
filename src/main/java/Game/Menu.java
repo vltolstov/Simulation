@@ -1,3 +1,5 @@
+package Game;
+
 import Utils.ConsoleRenderer;
 import Utils.InputReader;
 
