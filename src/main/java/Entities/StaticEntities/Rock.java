@@ -4,7 +4,7 @@ import World.Coordinates;
 
 public class Rock extends TerrainObjects {
 
-    private static final String SPRITE = " \uD83E\uDEA8 ";
+    private static final String SPRITE = " ☖ ";
 
     public Rock(Coordinates coordinates) {
         super(coordinates);

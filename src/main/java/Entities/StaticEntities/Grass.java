@@ -4,7 +4,7 @@ import World.Coordinates;
 
 public class Grass extends TerrainObjects {
 
-    private static final String SPRITE = " \uD83E\uDEBB ";
+    private static final String SPRITE = " ♨ ";
 
     public Grass(Coordinates coordinates) {
         super(coordinates);

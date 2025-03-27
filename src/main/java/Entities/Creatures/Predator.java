@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class Predator extends Creature {
 
-    private static final String SPRITE = " \uD83D\uDC2F ";
+    private static final String SPRITE = " ☠ ";
     private final int attackPower;
     private boolean onGrass;
 
