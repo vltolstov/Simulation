@@ -14,8 +14,7 @@ public class Herbivore extends Creature {
     }
 
     @Override
-    protected boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
-        // можем идти где пусто
+    protected boolean isAvailableCoordinateForAction(Coordinates coordinates, World world) {
         return world.isWorldCellEmpty(coordinates);
     }
 
@@ -23,7 +22,4 @@ public class Herbivore extends Creature {
     public String getSprite() {
         return SPRITE;
     }
-
-    //Стремятся найти ресурс (траву), может потратить свой ход на движение в сторону травы, либо на её поглощение.
-
 }
