@@ -24,9 +24,9 @@ public class Menu {
         String command = InputReader.getUserCommand();
 
         if (command.equals(CMD_STOP)) {
-            return state = GameState.STOP;
+            return GameAction.stopSimulation();
         } else if (command.equals(CMD_PAUSE)) {
-            return state = GameState.PAUSE;
+            return GameAction.pauseSimulation();
         } else {
             ConsoleRenderer.renderErrorMessage();
         }

@@ -9,7 +9,7 @@ import static java.lang.Math.round;
 
 public class WorldFactory {
 
-    private static final double WORLD_POPULATION_RATIO = 0.01; // по-умолчанию 0.3
+    private static final double WORLD_POPULATION_RATIO = 0.3; // по-умолчанию 0.3
     private Random random = new Random();
 
     public World createWorld() {

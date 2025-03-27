@@ -1,26 +1,42 @@
 package Game;
 
+import World.World;
+import World.WorldFactory;
+
 public class GameAction {
 
-    //Actions - список действий, исполняемых перед стартом симуляции или на каждом ходу (детали ниже)
-    //
-    //Методы:
-    //
-    //nextTurn() - просимулировать и отрендерить один ход
-    //startSimulation() - запустить бесконечный цикл симуляции и рендеринга
-    //pauseSimulation() - приостановить бесконечный цикл симуляции и рендеринга
+    private static GameState gameState = GameState.ONGOING;
 
-    //Actions #
-    //
-    //Action - действие, совершаемое над миром.
-    //Например - сходить всеми существами.
-    //Это действие итерировало бы существ и вызывало каждому makeMove().
-    //Каждое действие описывается отдельным классом и совершает операции над картой.
-    //Симуляция содержит 2 массива действий:
-    //
-    //initActions - действия, совершаемые перед стартом симуляции.
-    //Пример - расставить объекты и существ на карте
-    //turnActions - действия, совершаемые каждый ход.
-    //Примеры - передвижение существ, добавить травы или травоядных, если их осталось слишком мало
+    public static void nextTurn(World world) {
+        playSimulation(world);
+        pauseSimulation();
+    }
 
+    public static World startSimulation() {
+        gameState = GameState.ONGOING;
+        World world = (new WorldFactory()).createWorld();
+        playSimulation(world);
+        return world;
+    }
+
+    public static void playSimulation(World world) {
+        gameState = GameState.ONGOING;
+        world.getCreatures().forEach(creature -> {
+            world.moveEntity(creature.coordinates, creature.makeAction(world), world);
+        });
+    }
+
+    public static GameState pauseSimulation() {
+        gameState = GameState.PAUSE;
+        return gameState;
+    }
+
+    public static GameState stopSimulation() {
+        gameState = GameState.STOP;
+        return gameState;
+    }
+
+    public static GameState getGameState() {
+        return gameState;
+    }
 }
