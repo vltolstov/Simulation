@@ -19,19 +19,22 @@ public abstract class Creature extends Entity implements ICreature {
         super(coordinates);
     }
 
-    public Coordinates makeMove(World world) {
+    public Coordinates makeAction(World world) {
+        Set<Coordinates> coordinatesForAction = getAvailableCoordinateForAction(world);
+        return makeMove(coordinatesForAction);
+    }
 
-        Set<Coordinates> availableCoordinates = getAvailableCoordinateForMove(world);
+    public Coordinates makeMove(Set<Coordinates> availableCoordinates) {
 
         if (!availableCoordinates.isEmpty()) {
             coordinates = selectMoveCoordinate(availableCoordinates);
-            return selectMoveCoordinate(availableCoordinates);
+            return coordinates;
         }
 
         return coordinates;
     }
 
-    public Set<Coordinates> getAvailableCoordinateForMove(World world) {
+    public Set<Coordinates> getAvailableCoordinateForAction(World world) {
 
         Set<Coordinates> availableCoordinates = new HashSet<Coordinates>();
 
@@ -40,7 +43,7 @@ public abstract class Creature extends Entity implements ICreature {
             if (coordinates.canShift(shift, world)) {
                 Coordinates newCoordinates = coordinates.shift(shift);
 
-                if (isAvailableCoordinateForMove(newCoordinates, world)) {
+                if (isAvailableCoordinateForAction(newCoordinates, world)) {
                     availableCoordinates.add(newCoordinates);
                 }
             }
@@ -49,7 +52,7 @@ public abstract class Creature extends Entity implements ICreature {
         return availableCoordinates;
     }
 
-    protected abstract boolean isAvailableCoordinateForMove(Coordinates coordinates, World world);
+    protected abstract boolean isAvailableCoordinateForAction(Coordinates coordinates, World world);
 
     protected Set<CoordinatesShift> getMoveCoordinates(int speed) {
 

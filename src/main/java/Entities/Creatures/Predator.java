@@ -4,23 +4,70 @@ import Entities.StaticEntities.Grass;
 import World.Coordinates;
 import World.World;
 
+import java.util.Set;
+
 public class Predator extends Creature {
 
     private static final String SPRITE = " \uD83D\uDC2F ";
-    private int atacksPower;
+    private final int attackPower;
     private boolean onGrass;
 
     public Predator(Coordinates coordinates) {
         super(coordinates);
         speed = 2;
         health = 100;
-        atacksPower = 20;
+        attackPower = 20;
         onGrass = false;
     }
 
     @Override
-    protected boolean isAvailableCoordinateForMove(Coordinates coordinates, World world) {
-        return world.isWorldCellEmpty(coordinates) || world.getEntity(coordinates) instanceof Grass;
+    public Coordinates makeAction(World world) {
+
+        Set<Coordinates> coordinatesForAction = getAvailableCoordinateForAction(world);
+
+        if (isPredatorHasTarget(world, coordinatesForAction)) {
+            Creature target = (Creature) world.getEntity(getTarget(world, coordinatesForAction));
+            return makeAttack(target);
+        }
+
+        return makeMove(coordinatesForAction);
+    }
+
+    public Coordinates makeAttack(Creature creature) {
+        if (creature.health <= attackPower) {
+            return creature.coordinates;
+        } else {
+            creature.health = creature.health - attackPower;
+            return this.coordinates;
+        }
+    }
+
+    private boolean isPredatorHasTarget(World world, Set<Coordinates> coordinatesForAction) {
+        for (Coordinates coordinates : coordinatesForAction) {
+            if (world.getEntity(coordinates) instanceof Herbivore) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Coordinates getTarget(World world, Set<Coordinates> coordinatesForAction) {
+        for (Coordinates coordinates : coordinatesForAction) {
+            if (world.getEntity(coordinates) instanceof Herbivore) {
+                return coordinates;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isAvailableCoordinateForAction(Coordinates coordinates, World world) {
+
+        boolean cellIsEmpty = world.isWorldCellEmpty(coordinates);
+        boolean cellHasGrass = world.getEntity(coordinates) instanceof Grass;
+        boolean cellHasTarget = world.getEntity(coordinates) instanceof Herbivore;
+
+        return cellIsEmpty || cellHasGrass || cellHasTarget;
     }
 
     public boolean getOnGrassState() {
@@ -40,13 +87,4 @@ public class Predator extends Creature {
     public String getSprite() {
         return SPRITE;
     }
-
-    //Хищник, наследуется от Entities.Creatures.Creature.
-    // В дополнение к полям класса Entities.Creatures.Creature, имеет силу атаки.
-    // На что может потратить ход хищник:
-    //
-    //Переместиться (чтобы приблизиться к жертве - травоядному)
-    //Атаковать травоядное. При этом количество HP травоядного уменьшается на силу атаки хищника.
-    //Если значение HP жертвы опускается до 0, травоядное исчезает
-
 }
