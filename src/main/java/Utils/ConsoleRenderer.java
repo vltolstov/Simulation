@@ -39,4 +39,12 @@ public class ConsoleRenderer {
             System.out.println(line);
         }
     }
+
+    public static void clean() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception E) {
+            System.out.println(E);
+        }
+    }
 }
