@@ -3,35 +3,49 @@ package Game;
 import Utils.ConsoleRenderer;
 import Utils.InputReader;
 
-public class Menu {
+public class Menu extends Thread {
 
     private final static String CMD_STOP = "стоп";
     private final static String CMD_PAUSE = "пауза";
     private final static String STOP_MESSAGE = "Для выхода из игры введите - " + CMD_STOP;
     private final static String PAUSE_MESSAGE = "Для паузы игры введите - " + CMD_PAUSE;
+    private GameState gameState;
 
     public Menu() {
         showMenuMessages();
     }
 
-    private void showMenuMessages() {
+    public void showMenuMessages() {
         ConsoleRenderer.renderMessage(STOP_MESSAGE);
         ConsoleRenderer.renderMessage(PAUSE_MESSAGE);
     }
 
-    public GameState selectGameState(GameState state) {
+    @Override
+    public void run() {
+        selectGameState();
+    }
+
+    public GameState selectGameState() {
 
         String command = InputReader.getUserCommand();
 
         if (command.equals(CMD_STOP)) {
-            return GameAction.stopSimulation();
+            setGameState(GameState.STOP);
         } else if (command.equals(CMD_PAUSE)) {
-            return GameAction.pauseSimulation();
+            setGameState(GameState.PAUSE);
         } else {
             ConsoleRenderer.renderErrorMessage();
         }
 
-        return state;
+        return gameState;
+    }
+
+    public void setGameState(GameState state) {
+        gameState = state;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }
 

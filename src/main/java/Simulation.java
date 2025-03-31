@@ -1,25 +1,22 @@
-import Game.GameAction;
+import Game.Game;
 import Game.GameState;
 import Game.Menu;
-import Utils.ConsoleRenderer;
 import World.World;
+import World.WorldFactory;
 
 public class Simulation {
 
     public static void main(String[] args) throws InterruptedException {
 
+        World world = (new WorldFactory()).createWorld();
+
         Menu menu = new Menu();
-        World world = GameAction.startSimulation();
+        menu.setGameState(GameState.ONGOING);
+        menu.start();
 
-        while (GameAction.getGameState() != GameState.STOP) {
-            
-            ConsoleRenderer.renderWorld(world);
+        Game game = new Game();
+        game.loop(menu, world);
+        game.start();
 
-            GameAction.playSimulation(world);
-            Thread.sleep(1000);
-
-            menu.selectGameState(GameAction.getGameState());
-            ConsoleRenderer.clean();
-        }
     }
 }
