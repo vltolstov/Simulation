@@ -13,7 +13,7 @@ public class Game extends Thread {
 
         while (menu.getGameState() == GameState.ONGOING) {
 
-            ConsoleRenderer.renderWorld(world);
+            //ConsoleRenderer.renderWorld(world);
 
             GameAction.playSimulation(world);
 
