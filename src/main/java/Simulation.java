@@ -1,6 +1,5 @@
 import Actions.Action;
 import Entities.Entity;
-import Game.GameState;
 import Sprites.Sprite;
 import Utils.ConsoleRenderer;
 import World.Coordinates;

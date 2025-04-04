@@ -1,4 +1,3 @@
-import Game.GameState;
 import Utils.ConsoleRenderer;
 import Utils.InputReader;
 
