@@ -1,7 +1,6 @@
 import Actions.Action;
 import Entities.Entity;
 import Game.GameState;
-import Game.Menu;
 import Sprites.Sprite;
 import Utils.ConsoleRenderer;
 import World.Coordinates;
@@ -11,15 +10,13 @@ import java.util.ArrayList;
 
 public class Simulation {
 
+    private static GameState gameState;
     private static int GAME_LOOPS_COUNT = 0;
     private static ArrayList<Action> INIT_ACTIONS = new ArrayList<Action>();
     private static ArrayList<Action> TURN_ACTIONS = new ArrayList<Action>();
     private static World world;
-    private static Menu menu;
-    private static final Object mutex = new Object();
 
     public Simulation(ArrayList<Action> initActions, ArrayList<Action> turnActions, World world) {
-        Simulation.menu = new Menu();
         Simulation.world = world;
         INIT_ACTIONS = initActions;
         TURN_ACTIONS = turnActions;
@@ -30,70 +27,63 @@ public class Simulation {
         for (Action action : TURN_ACTIONS) {
             action.execute(world);
         }
+
         increaseGameLoopsCount();
+
+        renderWorld();
+        ConsoleRenderer.renderMessage("Current game loop: " + GAME_LOOPS_COUNT);
     }
 
     private static void initSimulation() {
         for (Action action : INIT_ACTIONS) {
             action.execute(world);
         }
-        menu.setGameState(GameState.ONGOING);
+        gameState = GameState.INFINITY_PLAY;
     }
 
-    public void startSimulation() {
+    public synchronized void startSimulation() {
 
-        Thread thread = createSimulationThread();
-        thread.start();
+        while (gameState != GameState.STOP) {
 
-        while (menu.getGameState() == GameState.ONGOING) {
-            menu.selectGameState(mutex);
-        }
-        //thread.interrupt();
-    }
-
-    public static Thread createSimulationThread() {
-
-        return new Thread(() -> {
-            while (menu.getGameState() != GameState.STOP) {
-
-                synchronized (mutex) {
-                    while (menu.getGameState() == GameState.PAUSE) {
-                        try {
-                            menu.selectGameState(mutex);
-                            mutex.wait();
-                        } catch (InterruptedException e) {
-                            if (!menu.getGameState().equals(GameState.ONGOING)) {
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                nextTurn(world);
-                renderWorld();
-                
-
+            if (gameState == GameState.PAUSE) {
                 try {
-                    Thread.sleep(1000);
+                    wait();
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
                 }
-
-                ConsoleRenderer.renderMessage("Current game loop: " + GAME_LOOPS_COUNT);
             }
-        });
-    }
 
-    public static void pauseSimulation() {
-        menu.setGameState(GameState.PAUSE);
-    }
+            nextTurn(world);
+            Menu.showMenu();
 
-    public void resumeSimulation() {
-        menu.setGameState(GameState.ONGOING);
+            // один проход
+//            if (gameState == GameState.ONE_LOOP) {
+//                gameState = GameState.PAUSE;
+//            }
 
-        synchronized (mutex) {
-            mutex.notify();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+
+            notify();
         }
+    }
+
+    public synchronized void pauseSimulation() {
+
+        while (gameState == GameState.INFINITY_PLAY) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+            }
+        }
+
+        notify();
+    }
+
+    public synchronized void resumeSimulation() {
+        gameState = GameState.INFINITY_PLAY;
+        notify();
     }
 
 
@@ -122,5 +112,13 @@ public class Simulation {
 
     public int getGameLoopsCount() {
         return GAME_LOOPS_COUNT;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        Simulation.gameState = gameState;
     }
 }

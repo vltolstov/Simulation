@@ -1,7 +1,8 @@
 package Game;
 
 public enum GameState {
-    ONGOING,
+    ONE_LOOP,
+    INFINITY_PLAY,
     PAUSE,
     STOP
 }
