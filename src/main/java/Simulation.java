@@ -1,6 +1,7 @@
 import Actions.Action;
 import Entities.Entity;
 import Game.GameState;
+import Game.Menu;
 import Sprites.Sprite;
 import Utils.ConsoleRenderer;
 import World.Coordinates;
@@ -10,13 +11,15 @@ import java.util.ArrayList;
 
 public class Simulation {
 
-    private static GameState GAME_STATE = GameState.ONGOING;
     private static int GAME_LOOPS_COUNT = 0;
     private static ArrayList<Action> INIT_ACTIONS = new ArrayList<Action>();
     private static ArrayList<Action> TURN_ACTIONS = new ArrayList<Action>();
     private static World world;
+    private static Menu menu;
+    private static final Object mutex = new Object();
 
     public Simulation(ArrayList<Action> initActions, ArrayList<Action> turnActions, World world) {
+        Simulation.menu = new Menu();
         Simulation.world = world;
         INIT_ACTIONS = initActions;
         TURN_ACTIONS = turnActions;
@@ -34,28 +37,65 @@ public class Simulation {
         for (Action action : INIT_ACTIONS) {
             action.execute(world);
         }
+        menu.setGameState(GameState.ONGOING);
     }
 
-    public static void startSimulation() {
-        GAME_STATE = GameState.ONGOING;
+    public void startSimulation() {
 
-        while (GAME_STATE == GameState.ONGOING) {
-            renderWorld();
-            nextTurn(world);
+        Thread thread = createSimulationThread();
+        thread.start();
 
-            ConsoleRenderer.renderMessage("Current game loop: " + GAME_LOOPS_COUNT);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        while (menu.getGameState() == GameState.ONGOING) {
+            menu.selectGameState(mutex);
         }
+        //thread.interrupt();
+    }
+
+    public static Thread createSimulationThread() {
+
+        return new Thread(() -> {
+            while (menu.getGameState() != GameState.STOP) {
+
+                synchronized (mutex) {
+                    while (menu.getGameState() == GameState.PAUSE) {
+                        try {
+                            menu.selectGameState(mutex);
+                            mutex.wait();
+                        } catch (InterruptedException e) {
+                            if (!menu.getGameState().equals(GameState.ONGOING)) {
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                nextTurn(world);
+                renderWorld();
+                
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                ConsoleRenderer.renderMessage("Current game loop: " + GAME_LOOPS_COUNT);
+            }
+        });
     }
 
     public static void pauseSimulation() {
-        GAME_STATE = GameState.PAUSE;
+        menu.setGameState(GameState.PAUSE);
     }
+
+    public void resumeSimulation() {
+        menu.setGameState(GameState.ONGOING);
+
+        synchronized (mutex) {
+            mutex.notify();
+        }
+    }
+
 
     public static void renderWorld() {
 

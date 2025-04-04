@@ -2,7 +2,6 @@ import Actions.Action;
 import Actions.MoveAction;
 import Actions.SpawnRandomAction;
 import Game.GameState;
-import Game.Menu;
 import World.World;
 
 import java.util.ArrayList;
@@ -21,11 +20,11 @@ public class Main {
         INIT_ACTIONS.add(new SpawnRandomAction());
         TURN_ACTIONS.add(new MoveAction());
 
-        Menu menu = new Menu();
-        menu.start();
+//        Menu menu = new Menu();
+//        menu.start();
 
-        //Simulation simulation = new Simulation(INIT_ACTIONS, TURN_ACTIONS, world, Menu menu);
-        //simulation.startSimulation();
+        Simulation simulation = new Simulation(INIT_ACTIONS, TURN_ACTIONS, world);
+        simulation.startSimulation();
 
 //        menu.setGameState(GameState.ONGOING);
 //        menu.start();
