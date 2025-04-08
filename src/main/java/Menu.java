@@ -31,10 +31,11 @@ public class Menu extends Thread {
     public void run() {
 
         while (simulation.getGameState() != GameState.STOP) {
-            Integer command = InputReader.getUserDigits();
+            Integer command = InputReader.getUserCommands();
 
             if (command == CMD_RUN_ONE_LOOP) {
                 simulation.setGameState(GameState.ONE_LOOP);
+                simulation.resumeSimulation();
             } else if (command == CMD_PLAY) {
                 simulation.setGameState(GameState.INFINITY_PLAY);
                 simulation.resumeSimulation();

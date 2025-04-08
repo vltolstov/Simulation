@@ -12,6 +12,4 @@ public abstract class Entity {
 
     public abstract String getSprite();
 
-    //Корневой абстрактный класс для всех существ и объектов существующих в симуляции
-
 }

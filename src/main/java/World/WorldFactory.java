@@ -19,10 +19,7 @@ public class WorldFactory {
 
         for (int i = 0; i < entityQuantity; i++) {
 
-            int randomEntityXCoordinate = random.nextInt(world.getWidth());
-            int randomEntityYCoordinate = random.nextInt(world.getHeight());
-
-            Coordinates coordinates = new Coordinates(randomEntityXCoordinate, randomEntityYCoordinate);
+            Coordinates coordinates = world.getRandomCellCoordinates();
             Entity entity = (new EntityFactory()).createRandomEntity(coordinates);
 
             world.setEntity(coordinates, entity);

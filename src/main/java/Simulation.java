@@ -22,18 +22,18 @@ public class Simulation {
         initSimulation();
     }
 
-    public static void nextTurn(World world) {
+    private void nextTurn(World world) {
         for (Action action : TURN_ACTIONS) {
             action.execute(world);
         }
 
-        increaseGameLoopsCount();
-
         renderWorld();
+
+        increaseGameLoopsCount();
         ConsoleRenderer.renderMessage("Current game loop: " + GAME_LOOPS_COUNT);
     }
 
-    private static void initSimulation() {
+    private void initSimulation() {
         for (Action action : INIT_ACTIONS) {
             action.execute(world);
         }
@@ -41,27 +41,27 @@ public class Simulation {
     }
 
     public synchronized void startSimulation() {
-
         while (gameState != GameState.STOP) {
 
             if (gameState == GameState.PAUSE) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
             }
 
             nextTurn(world);
             Menu.showMenu();
 
-            // один проход
-//            if (gameState == GameState.ONE_LOOP) {
-//                gameState = GameState.PAUSE;
-//            }
+            if (gameState == GameState.ONE_LOOP) {
+                gameState = GameState.PAUSE;
+            }
 
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
 
             notify();
@@ -69,25 +69,21 @@ public class Simulation {
     }
 
     public synchronized void pauseSimulation() {
-
         while (gameState == GameState.INFINITY_PLAY) {
             try {
                 wait();
             } catch (InterruptedException e) {
             }
         }
-
         notify();
     }
 
     public synchronized void resumeSimulation() {
-        gameState = GameState.INFINITY_PLAY;
         notify();
     }
 
 
-    public static void renderWorld() {
-
+    private static void renderWorld() {
         for (int consoleRow = 0; consoleRow < world.getHeight(); consoleRow++) {
             String line = "";
 
@@ -105,12 +101,8 @@ public class Simulation {
         }
     }
 
-    public static void increaseGameLoopsCount() {
+    private static void increaseGameLoopsCount() {
         GAME_LOOPS_COUNT++;
-    }
-
-    public int getGameLoopsCount() {
-        return GAME_LOOPS_COUNT;
     }
 
     public GameState getGameState() {
