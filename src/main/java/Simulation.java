@@ -73,6 +73,7 @@ public class Simulation {
             try {
                 wait();
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
         notify();
