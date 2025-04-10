@@ -5,7 +5,7 @@ import World.World;
 
 public class Predator extends Creature {
 
-    private static final String SPRITE = " ☠ ";
+    private static final String SPRITE = " \uD83D\uDC2F ";
     private final int attackPower;
 
     public Predator(Coordinates coordinates) {

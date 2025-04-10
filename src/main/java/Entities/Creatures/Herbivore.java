@@ -6,7 +6,7 @@ import World.World;
 
 public class Herbivore extends Creature {
 
-    private static final String SPRITE = " ☃ ";
+    private static final String SPRITE = " \uD83D\uDC30 ";
 
     public Herbivore(Coordinates coordinates) {
         super(coordinates);
