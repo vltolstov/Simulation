@@ -14,7 +14,4 @@ public class Rock extends TerrainObjects {
     public String getSprite() {
         return SPRITE;
     }
-
-    //камень 🪨
-
 }

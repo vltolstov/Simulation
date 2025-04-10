@@ -10,10 +10,8 @@ public class Grass extends TerrainObjects {
         super(coordinates);
     }
 
+    @Override
     public String getSprite() {
         return SPRITE;
     }
-
-    //трава - ресурс для травоядных 🪻
-
 }

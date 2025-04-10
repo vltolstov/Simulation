@@ -1,6 +1,7 @@
 package Entities.Creatures;
 
 import Entities.Entity;
+import PathFinder.BFS.PathFinder;
 import World.Coordinates;
 import World.CoordinatesShift;
 import World.World;
@@ -20,11 +21,32 @@ public abstract class Creature extends Entity implements ICreature {
     }
 
     public Coordinates makeAction(World world) {
-        Set<Coordinates> coordinatesForAction = getAvailableCoordinateForAction(world);
-        return makeMove(coordinatesForAction);
+
+        List<Coordinates> path = PathFinder.getPath(coordinates, this, world);
+
+        if (path.size() == 1) {
+            return makeAttack(path.get(0), world);
+
+        } else if (path.size() > 1) {
+
+            if (speed > 1 && isAvailableCoordinateForAction(path.get(speed - 1), world)) {
+                return makeMoveToTarget(path.get(speed - 1));
+            } else {
+                return makeMoveToTarget(path.get(0));
+            }
+        }
+
+        return makeRandomMove(world);
     }
 
-    public Coordinates makeMove(Set<Coordinates> availableCoordinates) {
+    protected abstract Coordinates makeAttack(Coordinates targetCoordinates, World world);
+
+    private Coordinates makeMoveToTarget(Coordinates targetCoordinates) {
+        return targetCoordinates;
+    }
+
+    private Coordinates makeRandomMove(World world) {
+        Set<Coordinates> availableCoordinates = getAvailableCoordinateForAction(world);
 
         if (!availableCoordinates.isEmpty()) {
             coordinates = selectMoveCoordinate(availableCoordinates);
@@ -35,11 +57,9 @@ public abstract class Creature extends Entity implements ICreature {
     }
 
     public Set<Coordinates> getAvailableCoordinateForAction(World world) {
-
         Set<Coordinates> availableCoordinates = new HashSet<Coordinates>();
 
         for (CoordinatesShift shift : getMoveCoordinates(speed)) {
-
             if (coordinates.canShift(shift, world)) {
                 Coordinates newCoordinates = coordinates.shift(shift);
 
@@ -52,7 +72,9 @@ public abstract class Creature extends Entity implements ICreature {
         return availableCoordinates;
     }
 
-    protected abstract boolean isAvailableCoordinateForAction(Coordinates coordinates, World world);
+    protected boolean isAvailableCoordinateForAction(Coordinates coordinates, World world) {
+        return world.isWorldCellEmpty(coordinates);
+    }
 
     protected Set<CoordinatesShift> getMoveCoordinates(int speed) {
 

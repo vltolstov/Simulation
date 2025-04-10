@@ -1,5 +1,6 @@
 package Entities.Creatures;
 
+import Entities.StaticEntities.Grass;
 import World.Coordinates;
 import World.World;
 
@@ -14,8 +15,9 @@ public class Herbivore extends Creature {
     }
 
     @Override
-    protected boolean isAvailableCoordinateForAction(Coordinates coordinates, World world) {
-        return world.isWorldCellEmpty(coordinates);
+    public Coordinates makeAttack(Coordinates targetCoordinates, World world) {
+        Grass targetGrass = (Grass) world.getEntity(targetCoordinates);
+        return targetGrass.coordinates;
     }
 
     @Override

@@ -56,15 +56,20 @@ public class PathFinder {
         }
 
         List<Coordinates> path = new ArrayList<>();
-        path.add(target);
-        Coordinates temp = target;
 
-        while (path.get(path.size() - 1) != coordinates) {
-            temp = parents.get(temp);
-            path.add(temp);
+        if (target != null) {
+            path.add(target);
+            Coordinates temp = target;
+
+            while (!path.get(path.size() - 1).equals(coordinates)) {
+                temp = parents.get(temp);
+                path.add(temp);
+            }
+
+            path.remove(path.size() - 1);
+            Collections.reverse(path);
         }
 
-        Collections.reverse(path);
         return path;
     }
 

@@ -1,9 +1,7 @@
 package World;
 
 import Entities.Creatures.Creature;
-import Entities.Creatures.Predator;
 import Entities.Entity;
-import Entities.StaticEntities.Grass;
 import Utils.ConsoleRenderer;
 import Utils.InputReader;
 
@@ -43,19 +41,9 @@ public class World {
         world.remove(coordinates);
     }
 
-    public void moveEntity(Coordinates from, Coordinates to, World world) {
+    public void moveEntity(Coordinates from, Coordinates to) {
         Entity entity = this.world.get(from);
-
-        if (entity instanceof Predator && this.world.get(to) instanceof Grass) {
-            ((Predator) entity).moveToGrass();
-            removeEntity(from);
-        } else if (entity instanceof Predator && ((Predator) entity).getOnGrassState()) {
-            removeEntity(from);
-            ((Predator) entity).moveFromGrass(from, world);
-        } else {
-            removeEntity(from);
-        }
-
+        removeEntity(from);
         setEntity(to, entity);
     }
 
