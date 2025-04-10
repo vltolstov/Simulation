@@ -6,10 +6,9 @@ import World.World;
 
 public class Herbivore extends Creature {
 
-    private static final String SPRITE = " ☃ ";
-
     public Herbivore(Coordinates coordinates) {
         super(coordinates);
+        sprite = " \uD83D\uDC30 ";
         speed = 1;
         health = 100;
     }
@@ -18,10 +17,5 @@ public class Herbivore extends Creature {
     public Coordinates makeAttack(Coordinates targetCoordinates, World world) {
         Grass targetGrass = (Grass) world.getEntity(targetCoordinates);
         return targetGrass.coordinates;
-    }
-
-    @Override
-    public String getSprite() {
-        return SPRITE;
     }
 }

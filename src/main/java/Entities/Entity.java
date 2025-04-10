@@ -4,12 +4,14 @@ import World.Coordinates;
 
 public abstract class Entity {
 
-    private static String SPRITE = "";
+    protected String sprite;
     public Coordinates coordinates;
 
     public Entity(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 
-    abstract public String getSprite();
+    public String getSprite() {
+        return sprite;
+    }
 }
