@@ -9,7 +9,6 @@ public class Predator extends Creature {
 
     public Predator(Coordinates coordinates) {
         super(coordinates);
-        sprite = " \uD83D\uDC2F ";
         speed = 2;
         health = 100;
         attackPower = 20;

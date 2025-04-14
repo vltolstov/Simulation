@@ -95,7 +95,7 @@ public class Simulation {
                     line += Sprite.getEmptySprite();
                 } else {
                     Entity entity = world.getEntity(coordinates);
-                    line += entity.getSprite();
+                    line += Sprite.getSprite(entity);
                 }
             }
             System.out.println(line);
