@@ -5,7 +5,8 @@ import Entities.Entity;
 public class Sprite {
 
     public String spriteCode;
-    private static final String EMPTY_SPRITE_CODE = "   ";
+    private static final String EMPTY_SPRITE_CODE = "  ";
+    private static final String BORDER_SPRITE = " \uD83C\uDF33 ";
     private static final String HERBIVORE_SPRITE = " \uD83D\uDC30 ";
     private static final String PREDATOR_SPRITE = " \uD83D\uDC2F ";
     private static final String GRASS_SPRITE = " \uD83C\uDF3F ";
@@ -16,21 +17,19 @@ public class Sprite {
         return EMPTY_SPRITE_CODE;
     }
 
+    public static String getBorderSprite() {
+        return BORDER_SPRITE;
+    }
+
     public static String getSprite(Entity entity) {
-        switch (entity.getClass().getSimpleName()) {
-            case "Herbivore":
-                return HERBIVORE_SPRITE;
-            case "Predator":
-                return PREDATOR_SPRITE;
-            case "Grass":
-                return GRASS_SPRITE;
-            case "Rock":
-                return ROCK_SPRITE;
-            case "Tree":
-                return TREE_SPRITE;
-            default:
-                throw new RuntimeException("Unknown entity type");
-        }
+        return switch (entity.getClass().getSimpleName()) {
+            case "Herbivore" -> HERBIVORE_SPRITE;
+            case "Predator" -> PREDATOR_SPRITE;
+            case "Grass" -> GRASS_SPRITE;
+            case "Rock" -> ROCK_SPRITE;
+            case "Tree" -> TREE_SPRITE;
+            default -> throw new RuntimeException("Unknown entity type");
+        };
     }
 
 }

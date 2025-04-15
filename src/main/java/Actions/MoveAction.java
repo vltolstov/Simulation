@@ -1,12 +1,13 @@
 package Actions;
 
 import World.World;
+import World.WorldUtils;
 
 public class MoveAction extends Action {
 
     public void execute(World world) {
-        world.getCreatures().forEach(creature -> {
-            world.moveEntity(creature.coordinates, creature.makeAction(world));
+        WorldUtils.getCreatures(world).forEach(creature -> {
+            WorldUtils.moveEntity(world, creature.getCoordinates(), creature.makeAction(world));
         });
     }
 }

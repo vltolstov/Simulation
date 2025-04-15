@@ -12,7 +12,7 @@ import static java.lang.Math.round;
 public class SpawnRandomAction extends Action {
 
     private static final double WORLD_POPULATION_RATIO = 0.3; // по-умолчанию 0.3
-    private Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     public void execute(World world) {

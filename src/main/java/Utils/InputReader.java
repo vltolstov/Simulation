@@ -2,7 +2,10 @@ package Utils;
 
 import java.util.Scanner;
 
-public class InputReader {
+public final class InputReader {
+
+    private InputReader() {
+    }
 
     private static Scanner scanner = new Scanner(System.in);
 

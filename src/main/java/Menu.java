@@ -28,6 +28,7 @@ public class Menu extends Thread {
         ConsoleRenderer.renderMessage(STOP_MESSAGE);
     }
 
+    @Override
     public void run() {
 
         while (simulation.getGameState() != GameState.STOP) {

@@ -1,40 +1,40 @@
 import Actions.Action;
-import Entities.Entity;
-import Sprites.Sprite;
 import Utils.ConsoleRenderer;
-import World.Coordinates;
 import World.World;
+import World.WorldRenderer;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class Simulation {
 
     private static GameState gameState;
-    private static int GAME_LOOPS_COUNT = 0;
-    private static ArrayList<Action> INIT_ACTIONS = new ArrayList<Action>();
-    private static ArrayList<Action> TURN_ACTIONS = new ArrayList<Action>();
-    private static World world;
+    private static int gameLoopCount = 0;
+    private List<Action> initActions = new ArrayList<Action>();
+    private List<Action> turnActions = new ArrayList<Action>();
+    private World world;
 
-    public Simulation(ArrayList<Action> initActions, ArrayList<Action> turnActions, World world) {
-        Simulation.world = world;
-        INIT_ACTIONS = initActions;
-        TURN_ACTIONS = turnActions;
+    public Simulation(List<Action> initActions, List<Action> turnActions, World world) {
+        this.world = world;
+        this.initActions = initActions;
+        this.turnActions = turnActions;
         initSimulation();
     }
 
     private void nextTurn(World world) {
-        for (Action action : TURN_ACTIONS) {
+        for (Action action : turnActions) {
             action.execute(world);
         }
 
-        renderWorld();
+        WorldRenderer.renderWorld(world);
 
         increaseGameLoopsCount();
-        ConsoleRenderer.renderMessage("Current game loop: " + GAME_LOOPS_COUNT);
+        ConsoleRenderer.renderMessage("Current game loop: " + gameLoopCount);
     }
 
     private void initSimulation() {
-        for (Action action : INIT_ACTIONS) {
+        for (Action action : initActions) {
             action.execute(world);
         }
         gameState = GameState.INFINITY_PLAY;
@@ -83,27 +83,8 @@ public class Simulation {
         notify();
     }
 
-
-    private static void renderWorld() {
-        for (int consoleRow = 0; consoleRow < world.getHeight(); consoleRow++) {
-            String line = "";
-
-            for (int consoleCol = 0; consoleCol < world.getWidth(); consoleCol++) {
-                Coordinates coordinates = new Coordinates(consoleCol, consoleRow);
-
-                if (world.isWorldCellEmpty(coordinates)) {
-                    line += Sprite.getEmptySprite();
-                } else {
-                    Entity entity = world.getEntity(coordinates);
-                    line += Sprite.getSprite(entity);
-                }
-            }
-            System.out.println(line);
-        }
-    }
-
     private static void increaseGameLoopsCount() {
-        GAME_LOOPS_COUNT++;
+        gameLoopCount++;
     }
 
     public GameState getGameState() {

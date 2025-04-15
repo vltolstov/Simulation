@@ -17,19 +17,13 @@ public class EntityFactory {
 
         int entityIndex = (new Random()).nextInt(ENTITY_TYPE_COUNT);
 
-        switch (entityIndex) {
-            case 0:
-                return new Herbivore(coordinates);
-            case 1:
-                return new Predator(coordinates);
-            case 2:
-                return new Grass(coordinates);
-            case 3:
-                return new Rock(coordinates);
-            case 4:
-                return new Tree(coordinates);
-            default:
-                throw new RuntimeException("Unknown entity type");
-        }
+        return switch (entityIndex) {
+            case 0 -> new Herbivore(coordinates);
+            case 1 -> new Predator(coordinates);
+            case 2 -> new Grass(coordinates);
+            case 3 -> new Rock(coordinates);
+            case 4 -> new Tree(coordinates);
+            default -> throw new RuntimeException("Unknown entity. Entity index: " + entityIndex);
+        };
     }
 }

@@ -2,7 +2,7 @@ package Utils;
 
 public class ConsoleRenderer {
 
-    private static final String ERROR_MESSAGE = "Ошибка ввода. Попробуйте еще раз";
+    private static final String ERROR_MESSAGE = "Input error. Try again.";
 
     public static void renderMessage(String message) {
         System.out.println(message);

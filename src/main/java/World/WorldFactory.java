@@ -1,30 +1,20 @@
 package World;
 
-import Entities.Entity;
-import Entities.EntityFactory;
-
-import java.util.Random;
-
-import static java.lang.Math.round;
+import Utils.ConsoleRenderer;
+import Utils.InputReader;
 
 public class WorldFactory {
 
-    private static final double WORLD_POPULATION_RATIO = 0.3; // по-умолчанию 0.3
-    private Random random = new Random();
+    private final static String SETTINGS_WORLD_WIDTH_MESSAGE = "Enter world width:";
+    private final static String SETTINGS_WORLD_HEIGHT_MESSAGE = "Enter world height:";
 
-    public World createWorld() {
+    public World createWorld(World world) {
 
-        World world = new World();
-        long entityQuantity = round(world.getHeight() * world.getWidth() * WORLD_POPULATION_RATIO);
+        ConsoleRenderer.renderMessage(SETTINGS_WORLD_WIDTH_MESSAGE);
+        world.setWidth(InputReader.getUserCommands());
 
-        for (int i = 0; i < entityQuantity; i++) {
-
-            Coordinates coordinates = world.getRandomCellCoordinates();
-            Entity entity = (new EntityFactory()).createRandomEntity(coordinates);
-
-            world.setEntity(coordinates, entity);
-
-        }
+        ConsoleRenderer.renderMessage(SETTINGS_WORLD_HEIGHT_MESSAGE);
+        world.setHeight(InputReader.getUserCommands());
 
         return world;
     }
