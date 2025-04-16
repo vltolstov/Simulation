@@ -1,9 +1,6 @@
 package PathFinder.BFS;
 
 import Entities.Creatures.Creature;
-import Entities.Creatures.Herbivore;
-import Entities.Creatures.Predator;
-import Entities.StaticEntities.Grass;
 import World.Coordinates;
 import World.World;
 
@@ -16,7 +13,10 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-public class PathFinder {
+public final class PathFinder {
+
+    private PathFinder() {
+    }
 
     public static List<Coordinates> getPath(Coordinates coordinates, Creature creature, World world) {
 
@@ -40,13 +40,7 @@ public class PathFinder {
                     cellQueue.add(item);
                     parents.put(item, currentCell);
                 } else {
-                    if ((creature instanceof Predator) && world.getEntity(item) instanceof Herbivore) {
-                        target = item;
-                        parents.put(item, currentCell);
-                        break targetSearch;
-                    }
-
-                    if ((creature instanceof Herbivore) && world.getEntity(item) instanceof Grass) {
+                    if (creature.isTarget(item, world)) {
                         target = item;
                         parents.put(item, currentCell);
                         break targetSearch;

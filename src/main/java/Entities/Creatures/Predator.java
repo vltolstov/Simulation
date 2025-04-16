@@ -8,9 +8,10 @@ public class Predator extends Creature {
     private static final int SPEED = 2;
     private static final int HEALTH = 100;
     private static final int ATTACK_POWER = 20;
+    private static final String TARGET_NAME = "Herbivore";
 
     public Predator(Coordinates coordinates) {
-        super(coordinates, SPEED, HEALTH);
+        super(coordinates, SPEED, HEALTH, TARGET_NAME);
     }
 
     public static int getAttackPower() {
@@ -28,5 +29,10 @@ public class Predator extends Creature {
             targetHerbivore.health = targetHerbivore.health - getAttackPower();
             return this.getCoordinates();
         }
+    }
+
+    @Override
+    public boolean isTarget(Coordinates itemCoordinates, World world) {
+        return world.getEntity(itemCoordinates) instanceof Herbivore;
     }
 }

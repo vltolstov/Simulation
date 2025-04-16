@@ -16,11 +16,13 @@ public abstract class Creature extends Entity {
 
     protected int speed;
     protected int health;
+    protected String targetName;
 
-    public Creature(Coordinates coordinates, int speed, int health) {
+    public Creature(Coordinates coordinates, int speed, int health, String targetName) {
         super(coordinates);
         this.speed = speed;
         this.health = health;
+        this.targetName = targetName;
     }
 
     public Coordinates makeAction(World world) {
@@ -122,4 +124,6 @@ public abstract class Creature extends Entity {
 
         return newRandomCoordinates;
     }
+
+    public abstract boolean isTarget(Coordinates itemCoordinates, World world);
 }
